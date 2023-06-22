@@ -9,6 +9,8 @@ DROP TABLE comuna CASCADE CONSTRAINTS;
 DROP TABLE cliente CASCADE CONSTRAINTS;
 DROP TABLE totalventas CASCADE CONSTRAINTS;
 
+--TIPO DATO: OK
+--INSERT: OK
 CREATE TABLE zona (
     id_zona     NUMBER(3) NOT NULL,
     nom_zona    VARCHAR2(10) NOT NULL,
@@ -16,12 +18,16 @@ CREATE TABLE zona (
     CONSTRAINT pk_id_zona PRIMARY KEY (id_zona)
 );
 
+--TIPO DATO: OK
+--INSERT: OK
 CREATE TABLE marca (
     id_marca NUMBER(4) GENERATED ALWAYS AS IDENTITY MINVALUE 1000 MAXVALUE 9999 START WITH 1000 INCREMENT BY 10,
     nom_marca VARCHAR2(25) NOT NULL,
     CONSTRAINT pk_id_marca PRIMARY KEY (id_marca)
 );
 
+--TIPO DATO: OK
+--INSERT: OK
 CREATE TABLE producto (
     id_articulo     NUMBER(3) NOT NULL,
     nom_articulo    VARCHAR2(25) NOT NULL,
@@ -34,6 +40,8 @@ CREATE TABLE producto (
     CONSTRAINT stock_actual CHECK (stock_actual > stock_minimo)
 );
 
+--TIPO DATO: OK
+--INSERT: OK
 CREATE TABLE categoria (
     id_categoria    NUMBER(3) NOT NULL,
     nom_categoria   VARCHAR2(20) NOT NULL,
@@ -41,6 +49,8 @@ CREATE TABLE categoria (
     CONSTRAINT pk_categoria PRIMARY KEY (id_categoria)
 );
 
+--TIPO DATO: OK
+--INSERT: OK
 CREATE TABLE vendedor (
     id_vendedor     NUMBER(3) NOT NULL,
     rut_vendedor    VARCHAR2(10) NOT NULL,
@@ -58,12 +68,17 @@ CREATE TABLE vendedor (
     CONSTRAINT fk_vendedor_categoria FOREIGN KEY (id_categoria) REFERENCES categoria (id_categoria)
 );
 
+
+--TIPO DATO: OK
+--INSERT: OK
 CREATE TABLE comuna (
     id_comuna   NUMBER(3) GENERATED ALWAYS AS IDENTITY MINVALUE 100 MAXVALUE 999 START WITH 100 INCREMENT BY 5,
     nom_comuna  VARCHAR2(60) NOT NULL,
     CONSTRAINT pk_comuna PRIMARY KEY (id_comuna)
 );
 
+--TIPO DATO: OK
+--INSERT: OK
 CREATE TABLE cliente (
     id_cliente      NUMBER(3) NOT NULL,
     nombre_cliente  VARCHAR2(35) NOT NULL,
@@ -74,16 +89,19 @@ CREATE TABLE cliente (
     CONSTRAINT fk_cliente_comuna FOREIGN KEY (id_comuna) REFERENCES comuna (id_comuna)
 );
 
+--TIPO DATO: OK
+--INSERT: OK
 CREATE TABLE factura (
     id_factura      NUMBER(5) GENERATED ALWAYS AS IDENTITY MINVALUE 10000 MAXVALUE 99999 START WITH 10000 INCREMENT BY 10,
     id_cliente      NUMBER(3) NOT NULL,
     id_vendedor     NUMBER(3) NOT NULL,
-    fecha_factura   DATE NOT NULL,
+    fecha_factura   DATE DEFAULT SYSDATE,
     CONSTRAINT pk_factura PRIMARY KEY (id_factura),
     CONSTRAINT fp_factura_cliente FOREIGN KEY (id_cliente) REFERENCES cliente (id_cliente),
     CONSTRAINT fp_factura_vendedor FOREIGN KEY (id_vendedor) REFERENCES vendedor (id_vendedor)
 );
 
+--TIPO DATO: OK
 CREATE TABLE detallefactura (
     id_factura  NUMBER(5) NOT NULL,
     id_articulo NUMBER(1) NOT NULL,
@@ -91,6 +109,7 @@ CREATE TABLE detallefactura (
     CONSTRAINT pk_detallefactura PRIMARY KEY (id_factura, id_articulo),
     CONSTRAINT fk_factura_detallefactura FOREIGN KEY (id_factura) REFERENCES factura (id_factura)
 );
+
 
 INSERT INTO zona (id_zona, nom_zona, porc) VALUES (1, 'Norte', 8.56);
 INSERT INTO zona (id_zona, nom_zona, porc) VALUES (2, 'Sur', 10.48);
@@ -134,19 +153,19 @@ INSERT INTO cliente (id_cliente, nombre_cliente, direccion, telefono, id_comuna)
 INSERT INTO cliente (id_cliente, nombre_cliente, direccion, telefono, id_comuna) VALUES (4, 'LOPEZ ROJAS THOMAS', 'ORDOÑEZ 2007', 562989233, 120);
 INSERT INTO cliente (id_cliente, nombre_cliente, direccion, telefono, id_comuna) VALUES (5, 'ZAMORA MOLINA TOMAS', 'HUERNAFOS 1294', 564343456, 105);
 
-INSERT INTO factura (id_cliente, id_vendedor, fecha_factura) VALUES (1, 2, '18/01/22');
-INSERT INTO factura (id_cliente, id_vendedor, fecha_factura) VALUES (2, 4, '18/01/22');
-INSERT INTO factura (id_cliente, id_vendedor, fecha_factura) VALUES (3, 3, '18/01/22');
-INSERT INTO factura (id_cliente, id_vendedor, fecha_factura) VALUES (4, 5, '18/01/22');
-INSERT INTO factura (id_cliente, id_vendedor, fecha_factura) VALUES (5, 2, '18/01/22');
-INSERT INTO factura (id_cliente, id_vendedor, fecha_factura) VALUES (1, 2, '05/02/22');
-INSERT INTO factura (id_cliente, id_vendedor, fecha_factura) VALUES (2, 4, '05/02/22');
-INSERT INTO factura (id_cliente, id_vendedor, fecha_factura) VALUES (3, 3, '05/02/22');
-INSERT INTO factura (id_cliente, id_vendedor, fecha_factura) VALUES (4, 5, '05/02/22');
-INSERT INTO factura (id_cliente, id_vendedor, fecha_factura) VALUES (5, 2, '05/02/22');
-INSERT INTO factura (id_cliente, id_vendedor, fecha_factura) VALUES (3, 3, (SELECT CAST(CURRENT_TIMESTAMP AS DATE) FROM DUAL));
-INSERT INTO factura (id_cliente, id_vendedor, fecha_factura) VALUES (4, 5, (SELECT CAST(CURRENT_TIMESTAMP AS DATE) FROM DUAL));
-INSERT INTO factura (id_cliente, id_vendedor, fecha_factura) VALUES (5, 2, (SELECT CAST(CURRENT_TIMESTAMP AS DATE) FROM DUAL));
+INSERT INTO factura (id_cliente, id_vendedor) VALUES (1, 2);
+INSERT INTO factura (id_cliente, id_vendedor) VALUES (2, 4);
+INSERT INTO factura (id_cliente, id_vendedor) VALUES (3, 3);
+INSERT INTO factura (id_cliente, id_vendedor) VALUES (4, 5);
+INSERT INTO factura (id_cliente, id_vendedor) VALUES (5, 2);
+INSERT INTO factura (id_cliente, id_vendedor) VALUES (1, 2);
+INSERT INTO factura (id_cliente, id_vendedor) VALUES (2, 4);
+INSERT INTO factura (id_cliente, id_vendedor) VALUES (3, 3);
+INSERT INTO factura (id_cliente, id_vendedor) VALUES (4, 5);
+INSERT INTO factura (id_cliente, id_vendedor) VALUES (5, 2);
+INSERT INTO factura (id_cliente, id_vendedor) VALUES (3, 3);
+INSERT INTO factura (id_cliente, id_vendedor) VALUES (4, 5);
+INSERT INTO factura (id_cliente, id_vendedor) VALUES (5, 2);
 
 INSERT INTO detallefactura (id_factura, id_articulo, cantidad) VALUES (10000, 1, 20);
 INSERT INTO detallefactura (id_factura, id_articulo, cantidad) VALUES (10000, 5, 23);
@@ -193,3 +212,4 @@ GROUP BY tb1.id_factura, tb1.fecha_factura, tb1.id_vendedor
 ORDER BY tb1.id_factura, tb1.fecha_factura, tb1.id_vendedor;
 
 SELECT * FROM totalventas;
+
