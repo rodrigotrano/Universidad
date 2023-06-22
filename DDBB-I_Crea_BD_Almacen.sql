@@ -9,8 +9,6 @@ DROP TABLE comuna CASCADE CONSTRAINTS;
 DROP TABLE cliente CASCADE CONSTRAINTS;
 DROP TABLE totalventas CASCADE CONSTRAINTS;
 
---TIPO DATO: OK
---INSERT: OK
 CREATE TABLE zona (
     id_zona     NUMBER(3) NOT NULL,
     nom_zona    VARCHAR2(10) NOT NULL,
@@ -18,16 +16,12 @@ CREATE TABLE zona (
     CONSTRAINT pk_id_zona PRIMARY KEY (id_zona)
 );
 
---TIPO DATO: OK
---INSERT: OK
 CREATE TABLE marca (
     id_marca NUMBER(4) GENERATED ALWAYS AS IDENTITY MINVALUE 1000 MAXVALUE 9999 START WITH 1000 INCREMENT BY 10,
     nom_marca VARCHAR2(25) NOT NULL,
     CONSTRAINT pk_id_marca PRIMARY KEY (id_marca)
 );
 
---TIPO DATO: OK
---INSERT: OK
 CREATE TABLE producto (
     id_articulo     NUMBER(3) NOT NULL,
     nom_articulo    VARCHAR2(25) NOT NULL,
@@ -40,8 +34,6 @@ CREATE TABLE producto (
     CONSTRAINT stock_actual CHECK (stock_actual > stock_minimo)
 );
 
---TIPO DATO: OK
---INSERT: OK
 CREATE TABLE categoria (
     id_categoria    NUMBER(3) NOT NULL,
     nom_categoria   VARCHAR2(20) NOT NULL,
@@ -49,8 +41,6 @@ CREATE TABLE categoria (
     CONSTRAINT pk_categoria PRIMARY KEY (id_categoria)
 );
 
---TIPO DATO: OK
---INSERT: OK
 CREATE TABLE vendedor (
     id_vendedor     NUMBER(3) NOT NULL,
     rut_vendedor    VARCHAR2(10) NOT NULL,
@@ -68,17 +58,12 @@ CREATE TABLE vendedor (
     CONSTRAINT fk_vendedor_categoria FOREIGN KEY (id_categoria) REFERENCES categoria (id_categoria)
 );
 
-
---TIPO DATO: OK
---INSERT: OK
 CREATE TABLE comuna (
     id_comuna   NUMBER(3) GENERATED ALWAYS AS IDENTITY MINVALUE 100 MAXVALUE 999 START WITH 100 INCREMENT BY 5,
     nom_comuna  VARCHAR2(60) NOT NULL,
     CONSTRAINT pk_comuna PRIMARY KEY (id_comuna)
 );
 
---TIPO DATO: OK
---INSERT: OK
 CREATE TABLE cliente (
     id_cliente      NUMBER(3) NOT NULL,
     nombre_cliente  VARCHAR2(35) NOT NULL,
@@ -89,8 +74,6 @@ CREATE TABLE cliente (
     CONSTRAINT fk_cliente_comuna FOREIGN KEY (id_comuna) REFERENCES comuna (id_comuna)
 );
 
---TIPO DATO: OK
---INSERT: OK
 CREATE TABLE factura (
     id_factura      NUMBER(5) GENERATED ALWAYS AS IDENTITY MINVALUE 10000 MAXVALUE 99999 START WITH 10000 INCREMENT BY 10,
     id_cliente      NUMBER(3) NOT NULL,
@@ -101,7 +84,6 @@ CREATE TABLE factura (
     CONSTRAINT fp_factura_vendedor FOREIGN KEY (id_vendedor) REFERENCES vendedor (id_vendedor)
 );
 
---TIPO DATO: OK
 CREATE TABLE detallefactura (
     id_factura  NUMBER(5) NOT NULL,
     id_articulo NUMBER(1) NOT NULL,
@@ -109,7 +91,6 @@ CREATE TABLE detallefactura (
     CONSTRAINT pk_detallefactura PRIMARY KEY (id_factura, id_articulo),
     CONSTRAINT fk_factura_detallefactura FOREIGN KEY (id_factura) REFERENCES factura (id_factura)
 );
-
 
 INSERT INTO zona (id_zona, nom_zona, porc) VALUES (1, 'Norte', 8.56);
 INSERT INTO zona (id_zona, nom_zona, porc) VALUES (2, 'Sur', 10.48);
